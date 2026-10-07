@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدرسة الهندية الابتدائية للبنين</title>
+    <style>
+        :root {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
+        }
+
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .hero-header {
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            color: white;
+            text-align: center;
+            padding: 35px 20px 45px 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+            margin-bottom: -25px;
+            cursor: pointer;
+            position: relative;
+        }
+        .hero-header h1 { font-size: 24px; margin: 0 0 8px 0; }
+        .hero-header p { font-size: 13px; margin: 0; opacity: 0.9; }
+
+        .theme-toggle-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 35px auto 30px auto;
+            padding: 0 16px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        h2, h3 { color: var(--text-color); font-size: 17px; margin-top: 0; text-align: right; }
+        p { color: var(--text-secondary); font-size: 13px; line-height: 1.6; text-align: right; margin: 0 0 15px 0; }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .btn-primary { background-color: #2563eb; }
+        .btn-success { background-color: #10b981; }
+        .btn-warning { background-color: #f59e0b; color: #fff; }
+        .btn-danger { background-color: #ef4444; }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            margin-top: 6px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .day-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+        .day-btn.full-width { grid-column: span 2; }
+        
+        .uploaded-img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-top: 12px;
+            background: var(--input-bg);
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <!-- الترويسة العلوية مع زر التبديل السريع -->
+    <div class="hero-header" onclick="triggerAdminLogin()">
+        <button class="theme-toggle-btn" onclick="event.stopPropagation(); toggleTheme();">🌙 الوضع</button>
+        <h1>مدرسة الهندية الابتدائية للبنين</h1>
+        <p>بوابة المعرفة والإبداع • كربلاء المقدسة[span_0](start_span)[span_0](end_span)</p>
+    </div>
+
+<div class="container">
+
+    <!-- الواجهة الرئيسية -->
+    <div id="userView" class="section active">
+        
+        <!-- أوقات الدوام الرسمي -->
+        <div class="card">
+            <h3 style="text-align:center; color:#2563eb;">⏰ أوقات الدوام الرسمي والاتصال[span_1](start_span)[span_1](end_span)</h3>
+            <p style="text-align: center;">معلومات الدوام الرسمي، أوقات الانصراف، ومواعيد مراجعة أولياء الأمور[span_2](start_span)[span_2](end_span).</p>
+            <button class="btn btn-primary" onclick="toggleTime()" style="margin-bottom: 15px;" id="timeBtn">عرض التفاصيل</button>
+            
+            <div id="timeBox" style="display: none; border-top: 1px solid var(--border-color); padding-top: 12px;">
+                <p id="displayTimeInfo" style="margin: 0; font-size: 14px;">
+                    • الدوام المدرسي: من الأحد إلى الخميس (يبدأ الطابور 7:30 صباحاً).<br>
+                    • انصراف الطلاب: الساعة 1:00 ظهراً.<br>
+                    • استقبال أولياء الأمور: الثلاثاء والخميس.<br>
+                    • العنوان: كربلاء المقدسة - قضاء الهندية (طويريج).
+                </p>
+            </div>
+        </div>
+
+        <!-- الجداول الدراسية -->
+        <div class="card">
+            <h3 style="text-align:center; color:#2563eb;">📅 الجداول الدراسية (أيام الأسبوع)[span_3](start_span)[span_3](end_span)</h3>
+            <p style="text-align: center;">اضغط على أي يوم من أيام الأسبوع لاستعراض جدول الحصص[span_4](start_span)[span_4](end_span):</p>
+            
+            <div class="days-grid">
+                <button class="day-btn" onclick="openSchedule('sunday')">الأحد[span_5](start_span)[span_5](end_span)</button>
+                <button class="day-btn" onclick="openSchedule('monday')">الإثنين[span_6](start_span)[span_6](end_span)</button>
+                <button class="day-btn" onclick="openSchedule('tuesday')">الثلاثاء[span_7](start_span)[span_7](end_span)</button>
+                <button class="day-btn" onclick="openSchedule('wednesday')">الأربعاء[span_8](start_span)[span_8](end_span)</button>
+                <button class="day-btn full-width" onclick="openSchedule('thursday')">الخميس</button>
+            </div>
+        </div>
+
+        <!-- لوحة التبليغات -->
+        <div class="card" id="noticeBoard" style="display: none;">
+            <h3 id="displayTitle" style="color: #2563eb;"></h3>
+            <p id="displayBody"></p>
+            <img id="displayImg" class="uploaded-img" src="" alt="صورة التبليغ" style="display:none;">
+        </div>
+
+        <!-- قسم الشكاوى والاقتراحات -->
+        <div class="card">
+            <h3>💬 الشكاوى والاقتراحات للطلاب</h3>
+            <input type="text" id="cName" placeholder="اسمك الكريم...">
+            <textarea id="cText" placeholder="اكتب اقتراحك أو شكواك هنا..." rows="3"></textarea>
+            <button class="btn btn-warning" onclick="sendComplaint()">إرسال الشكوى</button>
+        </div>
+
+        <!-- متابعة ردود الإدارة -->
+        <div class="card">
+            <h3>📬 متابعة ردود الإدارة على شكواك</h3>
+            <input type="text" id="checkNameInput" placeholder="أدخل اسمك الذي أرسلت به الشكوى...">
+            <button class="btn btn-primary" onclick="checkUserReplies()" style="background-color: #475569;">بحث عن ردود شكواي</button>
+            <div id="myRepliesContainer" style="margin-top: 12px;"></div>
+        </div>
+    </div>
+
+    <!-- صفحة عرض الجدول -->
+    <div id="scheduleView" class="section">
+        <div class="card">
+            <h2 id="scheduleDayTitle" style="text-align: center; color: #2563eb;">جدول الحصص</h2>
+            <div id="scheduleContentArea"></div>
+            <button class="btn btn-primary" onclick="switchSection('userView')" style="margin-top: 20px; background-color: #475569;">رجوع للرئيسية</button>
+        </div>
+    </div>
+
+    <!-- تسجيل دخول الإدارة (بدون نص إرشادي لرمز المرور) -->
+    <div id="loginView" class="section">
+        <div class="card">
+            <h2>تسجيل دخول الإدارة[span_9](start_span)[span_9](end_span)</h2>
+            <input type="password" id="adminCode" placeholder="أدخل رمز المرور...">
+            <button class="btn btn-primary" onclick="checkLogin()">دخول[span_10](start_span)[span_10](end_span)</button>
+            <button class="btn btn-danger" onclick="switchSection('userView')" style="margin-top: 10px; background-color: #475569;">رجوع للرئيسية[span_11](start_span)[span_11](end_span)</button>
+            <div id="loginAlert" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 10px; border-radius: 8px; margin-top: 10px; display: none; text-align: center; font-size: 13px;">الرمز غير صحيح!</div>
+        </div>
+    </div>
+
+    <!-- لوحة التحكم الإدارية الكاملة -->
+    <div id="adminView" class="section">
+        <div class="card">
+            <h2>لوحة التحكم الإدارية[span_12](start_span)[span_12](end_span)</h2>
+            <p>مرحباً بك يا مدير المدرسة[span_13](start_span)[span_13](end_span).</p>
+            
+            <h3 style="margin-top: 15px;">تعديل أوقات الدوام الرسمي:</h3>
+            <textarea id="adminNewTime" rows="3">الطابور 7:30 صباحاً.
+• انصراف الطلاب: الساعة 1:50 ظهراً.</textarea>
+            <button class="btn btn-warning" onclick="updateTimeData()">حفظ وتحديث أوقات الدوام</button>
+
+            <h3 style="margin-top: 24px;">نشر تبليغ أو إعلام جديد:</h3>
+            <input type="text" id="nTitle" placeholder="عنوان التبليغ (مثلاً: عطلة رسمية)...">
+            <textarea id="nBody" placeholder="نص التبليغ..." rows="3"></textarea>
+            
+            <!-- تم إرجاع اختيار ملف من الجهاز هنا -->
+            <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px;">إرفاق صورة (اختياري):</label>
+            <input type="file" id="nImageFile" accept="image/*" style="padding: 8px;">
+            
+            <button class="btn btn-success" onclick="publishNotice()">نشر التبليغ الآن</button>
+        </div>
+
+        <div class="card">
+            <h3>الشكاوى والمقترحات الواردة من الطلاب</h3>
+            <div id="complaintsListContainer">
+                <p style="text-align: center; color: var(--text-secondary);">لا توجد شكاوى واردة حالياً.</p>
+            </div>
+            <button class="btn btn-danger" onclick="switchSection('userView')" style="margin-top: 20px; background-color: #ef4444;">العودة للواجهة الرئيسية[span_14](start_span)[span_14](end_span)</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let schoolData = {
+        timeText: "الطابور 7:30 صباحاً.<br>• انصراف الطلاب: الساعة 1:50 ظهراً.",
+        schedules: { sunday: "", monday: "", tuesday: "", wednesday: "", thursday: "" },
+        complaints: []
+    };
+
+    const daysAr = { sunday: 'الأحد', monday: 'الإثنين', tuesday: 'الثلاثاء', wednesday: 'الأربعاء', thursday: 'الخميس' };
+
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        if (currentTheme === 'light') {
+            body.setAttribute('data-theme', 'dark');
+            document.querySelector('.theme-toggle-btn').innerText = '☀️ الوضع';
+        } else {
+            body.setAttribute('data-theme', 'light');
+            document.querySelector('.theme-toggle-btn').innerText = '🌙 الوضع';
+        }
+    }
+
+    function switchSection(secId) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(secId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function triggerAdminLogin() {
+        switchSection('loginView');
+    }
+
+    function toggleTime() {
+        const box = document.getElementById('timeBox');
+        const btn = document.getElementById('timeBtn');
+        if (box.style.display === 'none') {
+            box.style.display = 'block';
+            btn.innerText = 'إخفاء التفاصيل';
+        } else {
+            box.style.display = 'none';
+            btn.innerText = 'عرض التفاصيل';
+        }
+    }
+
+    function checkLogin() {
+        const code = document.getElementById('adminCode').value.trim();
+        if (code === "2027") {
+            document.getElementById('adminCode').value = '';
+            document.getElementById('loginAlert').style.display = 'none';
+            switchSection('adminView');
+            renderComplaints();
+        } else {
+            document.getElementById('loginAlert').style.display = 'block';
+        }
+    }
+
+    function updateTimeData() {
+        const val = document.getElementById('adminNewTime').value.replace(/\n/g, '<br>');
+        schoolData.timeText = val;
+        document.getElementById('displayTimeInfo').innerHTML = val;
+        alert('تم تحديث أوقات الدوام بنجاح!');
+    }
+
+    function publishNotice() {
+        const title = document.getElementById('nTitle').value.trim();
+        const body = document.getElementById('nBody').value.trim();
+        const fileInput = document.getElementById('nImageFile');
+
+        if (!title) {
+            alert('يرجى كتابة عنوان التبليغ على الأقل!');
+            return;
+        }
+
+        document.getElementById('displayTitle').innerText = title;
+        document.getElementById('displayBody').innerText = body;
+        const imgEl = document.getElementById('displayImg');
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imgEl.src = e.target.result;
+                imgEl.style.display = 'block';
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            imgEl.style.display = 'none';
+        }
+
+        document.getElementById('noticeBoard').style.display = 'block';
+        alert('تم نشر التبليغ بنجاح للجميع!');
+    }
+
+    function openSchedule(dayKey) {
+        switchSection('scheduleView');
+        document.getElementById('scheduleDayTitle').innerText = `جدول حصص يوم ${daysAr[dayKey]}`;
+        const area = document.getElementById('scheduleContentArea');
+        const img = schoolData.schedules[dayKey];
+        if (img) {
+            area.innerHTML = `<img src="${img}" class="uploaded-img" alt="الجدول">`;
+        } else {
+            area.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:30px;">لم يتم رفع جدول لهذا اليوم بعد.</p>`;
+        }
+    }
+
+    function sendComplaint() {
+        const name = document.getElementById('cName').value.trim();
+        const text = document.getElementById('cText').value.trim();
+        if (!name || !text) {
+            alert('يرجى كتابة الاسم ونص الشكوى أو الاقتراح!');
+            return;
+        }
+        schoolData.complaints.push({ id: Date.now(), name: name, text: text, reply: "" });
+        alert('تم إرسال شكواك بنجاح!');
+        document.getElementById('cName').value = '';
+        document.getElementById('cText').value = '';
+    }
+
+    function checkUserReplies() {
+        const nameInput = document.getElementById('checkNameInput').value.trim();
+        const container = document.getElementById('myRepliesContainer');
+        if (!nameInput) {
+            container.innerHTML = '<p style="color: #ef4444; text-align: center; font-size: 13px;">يرجى كتابة اسمك للبحث.</p>';
+            return;
+        }
+        const userList = schoolData.complaints.filter(c => c.name === nameInput);
+        if (userList.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); font-size: 13px;">لا توجد شكاوى مسجلة بهذا الاسم.</p>';
+            return;
+        }
+        let html = '';
+        userList.forEach(item => {
+            html += `<div style="background: var(--input-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 6px; text-align:right;">
+                <p style="margin:0 0 4px 0;"><strong>شكواك:</strong> ${item.text}</p>
+                <p style="margin:0;"><strong>الرد:</strong> <span style="color:#10b981; font-weight:bold;">${item.reply || 'قيد المراجعة...'}</span></p>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function renderComplaints() {
+        const container = document.getElementById('complaintsListContainer');
+        if (schoolData.complaints.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">لا توجد شكاوى واردة حالياً.</p>';
+            return;
+        }
+        let html = '';
+        schoolData.complaints.forEach(item => {
+            html += `<div style="border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; margin-bottom: 10px; background: var(--input-bg); text-align:right;">
+                <p style="margin:0 0 4px 0;"><strong>المرسل:</strong> ${item.name}</p>
+                <p style="margin:0 0 6px 0;"><strong>النص:</strong> ${item.text}</p>
+                <p style="margin:0 0 6px 0;"><strong>الرد:</strong> <span style="color:#2563eb;">${item.reply || 'لا يوجد رد'}</span></p>
+                <textarea id="reply-${item.id}" rows="2" placeholder="اكتب الرد هنا..." style="font-size:13px; padding:6px;"></textarea>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn btn-success" style="padding:6px 10px; font-size:12px; width:auto; margin-top:0;" onclick="sendReply(${item.id})">إرسال الرد</button>
+                    <button class="btn btn-danger" style="padding:6px 10px; font-size:12px; width:auto; margin-top:0;" onclick="deleteComp(${item.id})">حذف</button>
+                </div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    window.sendReply = function(id) {
+        const text = document.getElementById(`reply-${id}`).value.trim();
+        const comp = schoolData.complaints.find(c => c.id === id);
+        if (comp) {
+            comp.reply = text;
+            alert('تم إرسال الرد بنجاح!');
+            renderComplaints();
+        }
+    };
+
+    window.deleteComp = function(id) {
+        schoolData.complaints = schoolData.complaints.filter(c => c.id !== id);
+        renderComplaints();
+    };
+</script>
+
+</body>
+</html>
